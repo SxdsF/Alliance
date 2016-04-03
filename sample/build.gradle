@@ -24,6 +24,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -31,4 +33,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile project(':alliance')
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
 }

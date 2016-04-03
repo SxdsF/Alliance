@@ -8,7 +8,7 @@ package com.sxdsf.alliance;
  * @desc 调用模块统一返回结果
  */
 public interface Call<T> {
-	void execute(Callback<T> callback);
+	void execute(Callback<T> callback, Class<T> cls);
 
 	void execute();
 }
