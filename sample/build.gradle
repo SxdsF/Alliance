@@ -18,7 +18,6 @@ android {
         }
     }
     dexOptions {
-        incremental true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -36,4 +35,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile 'com.squareup.retrofit2:retrofit-converters:2.0.1'
+    compile 'com.squareup.retrofit2:retrofit-adapters:2.0.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
 }

@@ -4,9 +4,10 @@ import android.app.Application;
 import android.content.Context;
 
 import com.sxdsf.alliance.AllianceLeader;
-import com.sxdsf.alliance.rxjava.RxJavaAllianceLeader;
-import com.sxdsf.alliance.sample.rxjava.RxJavaNetworkService;
-import com.sxdsf.alliance.sample.rxjava.RxJavaRedirectService;
+import com.sxdsf.alliance.rxjava.RxAllianceLeader;
+import com.sxdsf.alliance.sample.rxjava.RxNetworkService;
+import com.sxdsf.alliance.sample.rxjava.RxRedirectService;
+import com.sxdsf.alliance.sample.rxjava.RxWhateverService;
 
 /**
  * MyApplication
@@ -19,7 +20,7 @@ public class MyApplication extends Application {
 
 	public static final AllianceLeader SERVICE_MANAGER = AllianceLeader.getInstance();
 
-	public static final RxJavaAllianceLeader RX_SERVICE_MANAGER = RxJavaAllianceLeader.getInstance();
+	public static final RxAllianceLeader RX_SERVICE_MANAGER = RxAllianceLeader.getInstance();
 	private static Context context;
 
 	@Override
@@ -28,9 +29,11 @@ public class MyApplication extends Application {
 		context = this;
 		SERVICE_MANAGER.addAlliance("redirect", RedirectService.class);
 		SERVICE_MANAGER.addAlliance("network", NetworkService.class);
+		SERVICE_MANAGER.addAlliance("whatever", WhateverService.class);
 
-		RX_SERVICE_MANAGER.addAlliance("redirect", RxJavaRedirectService.class);
-		RX_SERVICE_MANAGER.addAlliance("network", RxJavaNetworkService.class);
+		RX_SERVICE_MANAGER.addAlliance("redirect", RxRedirectService.class);
+		RX_SERVICE_MANAGER.addAlliance("network", RxNetworkService.class);
+		RX_SERVICE_MANAGER.addAlliance("whatever", RxWhateverService.class);
 	}
 
 	public static Context getContext() {

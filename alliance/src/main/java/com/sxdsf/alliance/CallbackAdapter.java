@@ -24,7 +24,7 @@ public abstract class CallbackAdapter<T> implements Callback<T> {
 	}
 
 	@Override
-	public void onProgress(int progress) {
+	public void onProgress(int progress, int total) {
 		// do nothing
 	}
 }

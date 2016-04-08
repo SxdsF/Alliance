@@ -1,14 +1,12 @@
 package com.sxdsf.alliance;
 
-import android.net.Uri;
-
 /**
  * Alliance
  *
  * @author sunbowen
  * @date 2016/3/30-20:31
- * @desc 模块接口
+ * @desc 各个模块需要继承的接口，只接收一个Request类的对象，并返回一个Call对象
  */
-public interface Alliance {
-	<T> Call<T> request(Uri uri);
+public interface Alliance<T> {
+	<Y> Call<T> request(Request<Y> request);
 }

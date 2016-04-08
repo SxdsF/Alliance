@@ -5,6 +5,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
 
@@ -18,13 +19,10 @@ import java.io.UnsupportedEncodingException;
 public class AllianceRequest<T> extends Request<T> {
 
 	private final Response.Listener<T> mListener;
-	private final Class<T> mClass;
 
-	public AllianceRequest(int method, String url, Class<T> cls, Response.Listener<T> listener,
-			Response.ErrorListener error) {
+	public AllianceRequest(int method, String url, Response.Listener<T> listener, Response.ErrorListener error) {
 		super(method, url, error);
 		mListener = listener;
-		mClass = cls;
 	}
 
 	@Override
@@ -47,7 +45,8 @@ public class AllianceRequest<T> extends Request<T> {
 		T t = null;
 		if (result != null) {
 			Gson gson = new Gson();
-			t = gson.fromJson(result, mClass);
+			t = gson.fromJson(result, new TypeToken<T>() {
+			}.getType());
 		}
 		return t;
 	}

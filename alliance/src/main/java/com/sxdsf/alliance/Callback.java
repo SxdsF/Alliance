@@ -14,5 +14,5 @@ public interface Callback<T> {
 
 	void onFinish();
 
-	void onProgress(int progress);
+	void onProgress(int progress, int total);
 }

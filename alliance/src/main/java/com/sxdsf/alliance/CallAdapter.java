@@ -10,12 +10,27 @@ package com.sxdsf.alliance;
 public abstract class CallAdapter<T> implements Call<T> {
 
 	@Override
-	public void execute(Callback<T> callback, Class<T> cls) {
+	public void execute(Callback<T> callback) {
 		// do nothing
 	}
 
 	@Override
-	public void execute() {
+	public T execute() {
+		return null;
+	}
+
+	@Override
+	public boolean isExecuted() {
+		return false;
+	}
+
+	@Override
+	public void cancel() {
 		// do nothing
+	}
+
+	@Override
+	public boolean isCanceled() {
+		return false;
 	}
 }

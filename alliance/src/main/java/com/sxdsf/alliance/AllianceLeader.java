@@ -9,21 +9,28 @@ import android.net.Uri;
  * @date 2016/3/30-20:34
  * @desc 路由跳转入口总管类
  */
-public class AllianceLeader implements Alliance {
+public class AllianceLeader implements FoundationAlliance<Uri, String> {
 	private AllianceLeader() {
 	}
 
 	@Override
-	public <T> Call<T> request(Uri uri) {
-		Call<T> call = null;
-		if (uri != null) {
-			String scheme = uri.getScheme();
-			Alliance alliance = this.allianceMap.getAlliance(scheme);
-			if (alliance != null) {
-				call = alliance.request(uri);
+	public <Y> Call<Response> request(Request<Y> request) {
+		Call<Response> call = null;
+		if (request != null) {
+			Uri uri = request.getUri();
+			if (uri != null) {
+				Alliance<Response> alliance = this.allianceMap.getAlliance(uri.getScheme());
+				if (alliance != null) {
+					call = alliance.request(request);
+				}
 			}
 		}
 		return call;
+	}
+
+	@Override
+	public String parse(Uri value) {
+		return null;
 	}
 
 	private static class InstanceHolder {
@@ -36,7 +43,11 @@ public class AllianceLeader implements Alliance {
 
 	private final AllianceMap allianceMap = new AllianceMap();
 
-	public void addAlliance(String scheme, Class<? extends Alliance> cls) {
+	public void addAlliance(String scheme, Class<? extends Alliance<Response>> cls) {
 		this.allianceMap.addAlliance(scheme, cls);
+	}
+
+	public void init() {
+		// 服务管理器初始化
 	}
 }
