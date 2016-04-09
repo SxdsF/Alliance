@@ -11,42 +11,36 @@ import java.util.concurrent.ConcurrentHashMap;
  * @desc 模块映射保存的类
  */
 class AllianceMap {
-	final Map<String, Class<? extends Alliance<Response>>> allianceClassMap = new ConcurrentHashMap<>();
-	final Map<String, Alliance<Response>> allianceMap = new ConcurrentHashMap<>();
+    final Map<String, Class<? extends Alliance<Request, Response>>> allianceClassMap = new ConcurrentHashMap<>();
+    final Map<String, Alliance<Request, Response>> allianceMap = new ConcurrentHashMap<>();
 
-	void addAlliance(String scheme, Class<? extends Alliance<Response>> cls) {
-		if (scheme != null && !"".equals(scheme) && cls != null) {
-			this.allianceClassMap.put(scheme, cls);
-		}
-	}
+    Alliance<Request, Response> getAlliance(String scheme) {
+        Alliance<Request, Response> alliance = null;
+        if (scheme != null && !"".equals(scheme)) {
+            synchronized (this) {
+                alliance = this.allianceMap.get(scheme);
+                if (alliance == null) {
+                    Class<? extends Alliance<Request, Response>> cls = this.allianceClassMap.get(scheme);
+                    if (cls != null) {
+                        alliance = this.create(cls);
+                    }
+                }
+            }
+        }
+        return alliance;
+    }
 
-	Alliance<Response> getAlliance(String scheme) {
-		Alliance<Response> alliance = null;
-		if (scheme != null && !"".equals(scheme)) {
-			synchronized (this) {
-				alliance = this.allianceMap.get(scheme);
-				if (alliance == null) {
-					Class<? extends Alliance<Response>> cls = this.allianceClassMap.get(scheme);
-					if (cls != null) {
-						alliance = this.create(cls);
-					}
-				}
-			}
-		}
-		return alliance;
-	}
-
-	private Alliance<Response> create(Class<? extends Alliance<Response>> cls) {
-		Alliance<Response> alliance = null;
-		if (cls != null) {
-			try {
-				alliance = cls.newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		return alliance;
-	}
+    private Alliance<Request, Response> create(Class<? extends Alliance<Request, Response>> cls) {
+        Alliance<Request, Response> alliance = null;
+        if (cls != null) {
+            try {
+                alliance = cls.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return alliance;
+    }
 }

@@ -2,12 +2,10 @@ package com.sxdsf.alliance.sample;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 
 import com.sxdsf.alliance.AllianceLeader;
 import com.sxdsf.alliance.rxjava.RxAllianceLeader;
-import com.sxdsf.alliance.sample.rxjava.RxNetworkService;
-import com.sxdsf.alliance.sample.rxjava.RxRedirectService;
-import com.sxdsf.alliance.sample.rxjava.RxWhateverService;
 
 /**
  * MyApplication
@@ -18,25 +16,27 @@ import com.sxdsf.alliance.sample.rxjava.RxWhateverService;
  */
 public class MyApplication extends Application {
 
-	public static final AllianceLeader SERVICE_MANAGER = AllianceLeader.getInstance();
+    public static final AllianceLeader SERVICE_MANAGER = AllianceLeader.getInstance();
 
-	public static final RxAllianceLeader RX_SERVICE_MANAGER = RxAllianceLeader.getInstance();
-	private static Context context;
+    public static final RxAllianceLeader RX_SERVICE_MANAGER = RxAllianceLeader.getInstance();
+    private static Context context;
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		context = this;
-		SERVICE_MANAGER.addAlliance("redirect", RedirectService.class);
-		SERVICE_MANAGER.addAlliance("network", NetworkService.class);
-		SERVICE_MANAGER.addAlliance("whatever", WhateverService.class);
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = this;
+        if (!SERVICE_MANAGER.isInitialized()) {
+            XmlResourceParser xrp = this.getResources().getXml(R.xml.alliance);
+            SERVICE_MANAGER.initialize(xrp);
+        }
 
-		RX_SERVICE_MANAGER.addAlliance("redirect", RxRedirectService.class);
-		RX_SERVICE_MANAGER.addAlliance("network", RxNetworkService.class);
-		RX_SERVICE_MANAGER.addAlliance("whatever", RxWhateverService.class);
-	}
+        if (!RX_SERVICE_MANAGER.isInitialized()) {
+            XmlResourceParser xrp = this.getResources().getXml(R.xml.rx_alliance);
+            RX_SERVICE_MANAGER.initialize(xrp);
+        }
+    }
 
-	public static Context getContext() {
-		return context;
-	}
+    public static Context getContext() {
+        return context;
+    }
 }

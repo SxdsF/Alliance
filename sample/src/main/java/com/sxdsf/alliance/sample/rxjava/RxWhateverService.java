@@ -5,7 +5,7 @@ import android.net.Uri;
 import com.sxdsf.alliance.GenericResponse;
 import com.sxdsf.alliance.Request;
 import com.sxdsf.alliance.Response;
-import com.sxdsf.alliance.rxjava.FoundationRxAlliance;
+import com.sxdsf.alliance.rxjava.RxFoundationAlliance;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -17,14 +17,14 @@ import rx.Subscriber;
  * @date 2016/4/8-14:47
  * @desc ${描述类实现的功能}
  */
-public class RxWhateverService implements FoundationRxAlliance<Uri, String> {
+public class RxWhateverService implements RxFoundationAlliance<Uri, String> {
 	@Override
 	public String parse(Uri value) {
 		return null;
 	}
 
 	@Override
-	public <Y> Observable<Response> request(Request<Y> request) {
+	public Observable<Response> request(Request request) {
 		return Observable.create(new Observable.OnSubscribe<Response>() {
 			@Override
 			public void call(Subscriber<? super Response> subscriber) {

@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.sxdsf.alliance.GenericResponse;
 import com.sxdsf.alliance.Response;
-import com.sxdsf.alliance.rxjava.FoundationRxAlliance;
+import com.sxdsf.alliance.rxjava.RxFoundationAlliance;
 import com.sxdsf.alliance.sample.AllianceRequest;
 import com.sxdsf.alliance.sample.MyApplication;
 
@@ -25,12 +25,12 @@ import rx.schedulers.Schedulers;
  * @date 2016/4/3-11:11
  * @desc 网络服务
  */
-public class RxNetworkService implements FoundationRxAlliance<Uri, String> {
+public class RxNetworkService implements RxFoundationAlliance<Uri, String> {
 
 	RequestQueue mQueue = Volley.newRequestQueue(MyApplication.getContext());
 
 	@Override
-	public <Y> Observable<Response> request(com.sxdsf.alliance.Request<Y> request) {
+	public Observable<Response> request(com.sxdsf.alliance.Request request) {
 		Observable<Response> call = null;
 		if (request != null) {
 			call = this.sendRequest(request);
@@ -38,7 +38,7 @@ public class RxNetworkService implements FoundationRxAlliance<Uri, String> {
 		return call;
 	}
 
-	<Y> Observable<Response> sendRequest(final com.sxdsf.alliance.Request<Y> request) {
+	<Y> Observable<Response> sendRequest(final com.sxdsf.alliance.Request request) {
 		Observable<Response> call = null;
 		if (request != null) {
 			Observable<Response> memory = Observable.create(new Observable.OnSubscribe<Response>() {

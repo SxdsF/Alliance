@@ -1,53 +1,46 @@
 package com.sxdsf.alliance;
 
-import android.net.Uri;
+import android.content.res.XmlResourceParser;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * AllianceLeader
  *
  * @author sunbowen
  * @date 2016/3/30-20:34
- * @desc 路由跳转入口总管类
+ * @desc 请求的入口类，所有的请求调用此类发出，此类中有路由服务，会跳转到相应的服务去执行
  */
-public class AllianceLeader implements FoundationAlliance<Uri, String> {
-	private AllianceLeader() {
-	}
+public final class AllianceLeader implements Alliance<Request, Response> {
 
-	@Override
-	public <Y> Call<Response> request(Request<Y> request) {
-		Call<Response> call = null;
-		if (request != null) {
-			Uri uri = request.getUri();
-			if (uri != null) {
-				Alliance<Response> alliance = this.allianceMap.getAlliance(uri.getScheme());
-				if (alliance != null) {
-					call = alliance.request(request);
-				}
-			}
-		}
-		return call;
-	}
+    private final RouteService router;
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
-	@Override
-	public String parse(Uri value) {
-		return null;
-	}
+    private AllianceLeader() {
+        this.router = new RouteService();
+    }
 
-	private static class InstanceHolder {
-		private static AllianceLeader INSTANCE = new AllianceLeader();
-	}
+    private static class InstanceHolder {
+        private static AllianceLeader INSTANCE = new AllianceLeader();
+    }
 
-	public static AllianceLeader getInstance() {
-		return InstanceHolder.INSTANCE;
-	}
+    public static AllianceLeader getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
 
-	private final AllianceMap allianceMap = new AllianceMap();
+    public void initialize(XmlResourceParser xrp) {
+        // 服务管理器初始化，实际上是调用RouteService的初始化去加载服务配置文件
+        if (this.initialized.compareAndSet(false, true)) {
+            this.router.initialize(xrp);
+        }
+    }
 
-	public void addAlliance(String scheme, Class<? extends Alliance<Response>> cls) {
-		this.allianceMap.addAlliance(scheme, cls);
-	}
+    public boolean isInitialized() {
+        return this.initialized.get();
+    }
 
-	public void init() {
-		// 服务管理器初始化
-	}
+    @Override
+    public Call<Response> request(Request request) {
+        return this.router.request(request);
+    }
 }

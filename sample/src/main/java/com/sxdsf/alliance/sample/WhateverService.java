@@ -17,32 +17,32 @@ import com.sxdsf.alliance.Response;
  * @date 2016/4/7-16:17
  * @desc ${描述类实现的功能}
  */
-public class WhateverService implements FoundationAlliance<Uri,String> {
-	@Override
-	public <Y> Call<Response> request(final Request<Y> request) {
-		Call<Response> call = null;
-		if (request != null) {
-			call = new CallAdapter<Response>() {
-				@Override
-				public void execute(Callback<Response> callback) {
-					GenericResponse response = new GenericResponse();
-					response.setData("WhateverService");
-					callback.onSuccess(response);
-				}
+public class WhateverService implements FoundationAlliance<Uri, String> {
+    @Override
+    public Call<Response> request(final Request request) {
+        Call<Response> call = null;
+        if (request != null) {
+            call = new CallAdapter<Response>() {
+                @Override
+                public void execute(Callback<Response> callback) {
+                    GenericResponse<String> response = new GenericResponse<>();
+                    response.setData("WhateverService");
+                    callback.onNext(response);
+                }
 
-				@Override
-				public Response execute() {
-					GenericResponse response = new GenericResponse();
-					response.setData("WhateverService");
-					return response;
-				}
-			};
-		}
-		return call;
-	}
+                @Override
+                public Response execute() {
+                    GenericResponse<String> response = new GenericResponse<>();
+                    response.setData("WhateverService");
+                    return response;
+                }
+            };
+        }
+        return call;
+    }
 
-	@Override
-	public String parse(Uri value) {
-		return null;
-	}
+    @Override
+    public String parse(Uri value) {
+        return null;
+    }
 }

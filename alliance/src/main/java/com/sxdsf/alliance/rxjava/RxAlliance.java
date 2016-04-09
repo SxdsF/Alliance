@@ -1,7 +1,5 @@
 package com.sxdsf.alliance.rxjava;
 
-import com.sxdsf.alliance.Request;
-
 import rx.Observable;
 
 /**
@@ -11,7 +9,7 @@ import rx.Observable;
  * @date 2016/4/3-11:01
  * @desc rxjava版的实现
  */
-public interface RxAlliance<T> {
+public interface RxAlliance<T, R> {
 
-	<Y> Observable<T> request(Request<Y> request);
+    Observable<R> request(T request);
 }

@@ -5,29 +5,7 @@ package com.sxdsf.alliance;
  *
  * @author sunbowen
  * @date 2016/4/7-10:26
- * @desc 请求的回调返回类型
+ * @desc 请求的统一返回类型，用于回调和直接返回
  */
-// public class Response<T> {
-// private String className;
-// private T data;
-//
-// public String getClassName() {
-// return className;
-// }
-//
-// public void setClassName(String className) {
-// this.className = className;
-// }
-//
-// public T getData() {
-// return data;
-// }
-//
-// public void setData(T data) {
-// this.data = data;
-// }
-// }
-
-public interface Response {
-	<T> T checkAndGet(Class<T> cls);
+public interface Response extends Information {
 }

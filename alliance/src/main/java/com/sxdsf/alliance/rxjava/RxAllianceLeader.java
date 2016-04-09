@@ -1,9 +1,11 @@
 package com.sxdsf.alliance.rxjava;
 
-import android.net.Uri;
+import android.content.res.XmlResourceParser;
 
 import com.sxdsf.alliance.Request;
 import com.sxdsf.alliance.Response;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 
@@ -14,45 +16,36 @@ import rx.Observable;
  * @date 2016/3/30-20:34
  * @desc 路由跳转入口总管类
  */
-public class RxAllianceLeader implements FoundationRxAlliance<Uri, String> {
-	private RxAllianceLeader() {
-	}
+public class RxAllianceLeader implements RxAlliance<Request, Response> {
 
-	@Override
-	public <Y> Observable<Response> request(Request<Y> request) {
-		Observable<Response> observable = null;
-		if (request != null) {
-			Uri uri = request.getUri();
-			if (uri != null) {
-				RxAlliance<Response> alliance = this.allianceMap.getAlliance(this.parse(uri));
-				if (alliance != null) {
-					observable = alliance.request(request);
-				}
-			}
-		}
-		return observable;
-	}
+    private final RxRouteService router;
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
-	@Override
-	public String parse(Uri value) {
-		String result = null;
-		if (value != null) {
-			result = value.getScheme();
-		}
-		return result;
-	}
+    private RxAllianceLeader() {
+        this.router = new RxRouteService();
+    }
 
-	private static class InstanceHolder {
-		private static RxAllianceLeader INSTANCE = new RxAllianceLeader();
-	}
+    @Override
+    public Observable<Response> request(Request request) {
+        return this.router.request(request);
+    }
 
-	public static RxAllianceLeader getInstance() {
-		return InstanceHolder.INSTANCE;
-	}
+    private static class InstanceHolder {
+        private static RxAllianceLeader INSTANCE = new RxAllianceLeader();
+    }
 
-	private final RxAllianceMap allianceMap = new RxAllianceMap();
+    public static RxAllianceLeader getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
 
-	public void addAlliance(String scheme, Class<? extends RxAlliance<Response>> cls) {
-		this.allianceMap.addAlliance(scheme, cls);
-	}
+    public void initialize(XmlResourceParser xrp) {
+        // 服务管理器初始化，实际上是调用RouteService的初始化去加载服务配置文件
+        if (this.initialized.compareAndSet(false, true)) {
+            this.router.initialize(xrp);
+        }
+    }
+
+    public boolean isInitialized() {
+        return this.initialized.get();
+    }
 }

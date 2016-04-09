@@ -1,13 +1,13 @@
 package com.sxdsf.alliance;
 
 /**
- * GenericResponse
+ * GenericRequest
  *
  * @author sunbowen
- * @date 2016/4/8-15:01
- * @desc 通用的泛型数据Response
+ * @date 2016/4/9-1:08
+ * @desc 通用的泛型数据Request
  */
-public class GenericResponse<R> implements Response {
+public class GenericRequest<R> extends Request {
 
     private R data;
 

@@ -1,32 +1,37 @@
-package com.sxdsf.alliance;
+package com.sxdsf.alliance.rxjava;
 
 import android.content.res.XmlResourceParser;
 import android.net.Uri;
+
+import com.sxdsf.alliance.Request;
+import com.sxdsf.alliance.Response;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
+import rx.Observable;
+
 /**
- * RouteService
+ * RxRouteService
  *
  * @author sunbowen
- * @date 2016/4/8-17:21
- * @desc 路由服务，负责转发Uri到相应的服务
+ * @date 2016/4/9-9:52
+ * @desc 路由服务，负责将Uri转发到相应的服务
  */
-public class RouteService implements FoundationAlliance<Request, String> {
+public class RxRouteService implements RxFoundationAlliance<Request, String> {
 
     /**
      * 存放各种组件的map
      */
-    private final AllianceMap allianceMap = new AllianceMap();
+    private final RxAllianceMap allianceMap = new RxAllianceMap();
 
     @Override
-    public Call<Response> request(Request request) {
-        Call<Response> call = null;
+    public Observable<Response> request(Request request) {
+        Observable<Response> call = null;
         if (request != null) {
-            Alliance<Request, Response> alliance = this.allianceMap.getAlliance(this.parse(request));
+            RxAlliance<Request, Response> alliance = this.allianceMap.getAlliance(this.parse(request));
             if (alliance != null) {
                 call = alliance.request(request);
             }
@@ -72,7 +77,7 @@ public class RouteService implements FoundationAlliance<Request, String> {
                                 }
                                 if (scheme != null && !"".equals(scheme)
                                         && className != null && !"".equals(className)) {
-                                    this.allianceMap.allianceClassMap.put(scheme, (Class<? extends Alliance<Request, Response>>) Class.forName(className));
+                                    this.allianceMap.allianceClassMap.put(scheme, (Class<? extends RxAlliance<Request, Response>>) Class.forName(className));
                                 }
                             }
                             break;

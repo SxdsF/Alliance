@@ -9,13 +9,36 @@ package com.sxdsf.alliance;
  */
 public interface Call<T> {
 
-	void execute(Callback<T> callback);
+    /**
+     * 有回调的执行方法
+     *
+     * @param callback
+     */
+    void execute(Callback<T> callback);
 
-	T execute();
+    /**
+     * 直接返回的执行方法
+     *
+     * @return
+     */
+    T execute();
 
-	boolean isExecuted();
+    /**
+     * 判断任务是否执行
+     *
+     * @return
+     */
+    boolean isExecuted();
 
-	void cancel();
+    /**
+     * 取消任务
+     */
+    void cancel();
 
-	boolean isCanceled();
+    /**
+     * 判断任务是否取消
+     *
+     * @return
+     */
+    boolean isCanceled();
 }

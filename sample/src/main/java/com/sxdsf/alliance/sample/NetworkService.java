@@ -21,7 +21,7 @@ public class NetworkService implements FoundationAlliance<Uri,String> {
 	private final RequestQueue mQueue = Volley.newRequestQueue(MyApplication.getContext());
 
 	@Override
-	public <Y> Call<Response> request(Request<Y> request) {
+	public Call<Response> request(Request request) {
 		Call<Response> call = null;
 		if (request != null) {
 			call = this.sendRequest(request);
@@ -29,10 +29,10 @@ public class NetworkService implements FoundationAlliance<Uri,String> {
 		return call;
 	}
 
-	<Y> Call<Response> sendRequest(Request<Y> request) {
+	Call<Response> sendRequest(Request request) {
 		Call<Response> call = null;
 		if (request != null) {
-			call = new NetworkCall<>(mQueue, request);
+			call = new NetworkCall(mQueue, request);
 		}
 		return call;
 	}

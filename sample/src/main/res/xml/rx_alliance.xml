@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<alliance-list>
+
+    <alliance
+        name="com.sxdsf.alliance.sample.rxjava.RxRedirectService"
+        scheme="redirect"/>
+
+    <alliance
+        name="com.sxdsf.alliance.sample.rxjava.RxWhateverService"
+        scheme="whatever"/>
+
+    <alliance
+        name="com.sxdsf.alliance.sample.rxjava.RxNetworkService"
+        scheme="network"/>
+
+</alliance-list>

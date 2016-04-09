@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.sxdsf.alliance.Request;
 import com.sxdsf.alliance.Response;
-import com.sxdsf.alliance.rxjava.FoundationRxAlliance;
+import com.sxdsf.alliance.rxjava.RxFoundationAlliance;
 import com.sxdsf.alliance.sample.MyApplication;
 
 import rx.Observable;
@@ -20,12 +20,12 @@ import rx.Subscriber;
  * @date 2016/4/3-11:10
  * @desc 跳转服务
  */
-public class RxRedirectService implements FoundationRxAlliance<Uri, String> {
+public class RxRedirectService implements RxFoundationAlliance<Uri, String> {
 
 	private final Context context = MyApplication.getContext();
 
 	@Override
-	public <Y> Observable<Response> request(final Request<Y> request) {
+	public Observable<Response> request(final Request request) {
 		Observable<Response> call = null;
 		if (request != null && request.getUri() != null) {
 			final Uri uri = request.getUri();
@@ -35,8 +35,9 @@ public class RxRedirectService implements FoundationRxAlliance<Uri, String> {
 					String clsName = parse(uri);
 					Intent intent = new Intent();
 					intent.setClassName(context, clsName);
-					if (request.getData() != null && request.getData() instanceof Bundle) {
-						intent.putExtras((Bundle) request.getData());
+					Bundle bundle = request.checkAndGet(Bundle.class);
+					if (bundle != null) {
+						intent.putExtras(bundle);
 					}
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					context.startActivity(intent);
