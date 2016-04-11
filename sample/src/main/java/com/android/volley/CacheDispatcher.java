@@ -85,12 +85,12 @@ public class CacheDispatcher extends Thread {
 
         while (true) {
             try {
-                // Get a request from the cache triage queue, blocking until
+                // Get a call from the cache triage queue, blocking until
                 // at least one is available.
                 final Request<?> request = mCacheQueue.take();
                 request.addMarker("cache-queue-take");
 
-                // If the request has been canceled, don't bother dispatching it.
+                // If the call has been canceled, don't bother dispatching it.
                 if (request.isCanceled()) {
                     request.finish("cache-discard-canceled");
                     continue;
@@ -113,7 +113,7 @@ public class CacheDispatcher extends Thread {
                     continue;
                 }
 
-                // We have a cache hit; parse its data for delivery back to the request.
+                // We have a cache hit; parse its data for delivery back to the call.
                 request.addMarker("cache-hit");
                 Response<?> response = request.parseNetworkResponse(
                         new NetworkResponse(entry.data, entry.responseHeaders));
@@ -124,7 +124,7 @@ public class CacheDispatcher extends Thread {
                     mDelivery.postResponse(request, response);
                 } else {
                     // Soft-expired cache hit. We can deliver the cached response,
-                    // but we need to also send the request to the network for
+                    // but we need to also send the call to the network for
                     // refreshing.
                     request.addMarker("cache-hit-refresh-needed");
                     request.setCacheEntry(entry);
@@ -133,7 +133,7 @@ public class CacheDispatcher extends Thread {
                     response.intermediate = true;
 
                     // Post the intermediate response back to the user and have
-                    // the delivery then forward the request along to the network.
+                    // the delivery then forward the call along to the network.
                     mDelivery.postResponse(request, response, new Runnable() {
                         @Override
                         public void run() {

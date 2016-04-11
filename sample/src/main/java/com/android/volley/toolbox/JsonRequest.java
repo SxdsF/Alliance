@@ -26,16 +26,16 @@ import com.android.volley.VolleyLog;
 import java.io.UnsupportedEncodingException;
 
 /**
- * A request for retrieving a T type response body at a given URL that also
- * optionally sends along a JSON body in the request specified.
+ * A call for retrieving a T type response body at a given URL that also
+ * optionally sends along a JSON body in the call specified.
  *
  * @param <T> JSON type of response expected
  */
 public abstract class JsonRequest<T> extends Request<T> {
-    /** Default charset for JSON request. */
+    /** Default charset for JSON call. */
     protected static final String PROTOCOL_CHARSET = "utf-8";
 
-    /** Content type for request. */
+    /** Content type for call. */
     private static final String PROTOCOL_CONTENT_TYPE =
         String.format("application/json; charset=%s", PROTOCOL_CHARSET);
 

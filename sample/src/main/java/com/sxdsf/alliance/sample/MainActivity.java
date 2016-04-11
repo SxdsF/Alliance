@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 rw.setUri(Uri.parse("whatever://index"));
 
                 // 普通版的
-                MyApplication.SERVICE_MANAGER.request(rd).execute();
-                MyApplication.SERVICE_MANAGER.request(rn).execute(new CallbackAdapter<Response>() {
+                MyApplication.SERVICE_MANAGER.call(rd).execute();
+                MyApplication.SERVICE_MANAGER.call(rn).execute(new CallbackAdapter<Response>() {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                MyApplication.SERVICE_MANAGER.request(rw).execute(new CallbackAdapter<Response>() {
+                MyApplication.SERVICE_MANAGER.call(rw).execute(new CallbackAdapter<Response>() {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();
@@ -77,12 +77,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                Response response = MyApplication.SERVICE_MANAGER.request(rw).execute();
+                Response response = MyApplication.SERVICE_MANAGER.call(rw).execute();
                 System.out.println(response.checkAndGet(String.class));
 
                 // RxJava版的
-                MyApplication.RX_SERVICE_MANAGER.request(rd).subscribe();
-                MyApplication.RX_SERVICE_MANAGER.request(rn).subscribe(new Subscriber<Response>() {
+                MyApplication.RX_SERVICE_MANAGER.call(rd).subscribe();
+                MyApplication.RX_SERVICE_MANAGER.call(rn).subscribe(new Subscriber<Response>() {
                     @Override
                     public void onCompleted() {
                         System.out.println("调用完成");
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(s);
                     }
                 });
-                MyApplication.RX_SERVICE_MANAGER.request(rw).subscribe(new Subscriber<Response>() {
+                MyApplication.RX_SERVICE_MANAGER.call(rw).subscribe(new Subscriber<Response>() {
                     @Override
                     public void onCompleted() {
 

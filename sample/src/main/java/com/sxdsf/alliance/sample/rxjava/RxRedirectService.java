@@ -25,7 +25,7 @@ public class RxRedirectService implements RxFoundationAlliance<Uri, String> {
 	private final Context context = MyApplication.getContext();
 
 	@Override
-	public Observable<Response> request(final Request request) {
+	public Observable<Response> call(final Request request) {
 		Observable<Response> call = null;
 		if (request != null && request.getUri() != null) {
 			final Uri uri = request.getUri();

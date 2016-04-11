@@ -27,7 +27,7 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the
- * associated request.
+ * associated call.
  */
 public class NetworkImageView extends ImageView {
     /** The URL of the network image to load */
@@ -71,7 +71,7 @@ public class NetworkImageView extends ImageView {
      * this function.
      *
      * @param url The URL that should be loaded into this ImageView.
-     * @param imageLoader ImageLoader that will be used to make the request.
+     * @param imageLoader ImageLoader that will be used to make the call.
      */
     public void setImageUrl(String url, ImageLoader imageLoader) {
         mUrl = url;
@@ -129,13 +129,13 @@ public class NetworkImageView extends ImageView {
             return;
         }
 
-        // if there was an old request in this view, check if it needs to be canceled.
+        // if there was an old call in this view, check if it needs to be canceled.
         if (mImageContainer != null && mImageContainer.getRequestUrl() != null) {
             if (mImageContainer.getRequestUrl().equals(mUrl)) {
-                // if the request is from the same URL, return.
+                // if the call is from the same URL, return.
                 return;
             } else {
-                // if there is a pre-existing request, cancel it if it's fetching a different URL.
+                // if there is a pre-existing call, cancel it if it's fetching a different URL.
                 mImageContainer.cancelRequest();
                 setDefaultImageOrNull();
             }
@@ -202,7 +202,7 @@ public class NetworkImageView extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         if (mImageContainer != null) {
-            // If the view was bound to an image request, cancel it and clear
+            // If the view was bound to an image call, cancel it and clear
             // out the image from the view.
             mImageContainer.cancelRequest();
             setImageBitmap(null);

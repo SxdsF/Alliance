@@ -28,12 +28,12 @@ import org.json.JSONException;
 import java.io.UnsupportedEncodingException;
 
 /**
- * A request for retrieving a {@link JSONArray} response body at a given URL.
+ * A call for retrieving a {@link JSONArray} response body at a given URL.
  */
 public class JsonArrayRequest extends JsonRequest<JSONArray> {
 
     /**
-     * Creates a new request.
+     * Creates a new call.
      * @param url URL to fetch the JSON from
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
@@ -43,11 +43,11 @@ public class JsonArrayRequest extends JsonRequest<JSONArray> {
     }
 
     /**
-     * Creates a new request.
+     * Creates a new call.
      * @param method the HTTP method to use
      * @param url URL to fetch the JSON from
-     * @param jsonRequest A {@link JSONArray} to post with the request. Null is allowed and
-     *   indicates no parameters will be posted along with request.
+     * @param jsonRequest A {@link JSONArray} to post with the call. Null is allowed and
+     *   indicates no parameters will be posted along with call.
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
      */

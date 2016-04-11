@@ -21,7 +21,7 @@ public class NetworkService implements FoundationAlliance<Uri,String> {
 	private final RequestQueue mQueue = Volley.newRequestQueue(MyApplication.getContext());
 
 	@Override
-	public Call<Response> request(Request request) {
+	public Call<Response> call(Request request) {
 		Call<Response> call = null;
 		if (request != null) {
 			call = this.sendRequest(request);

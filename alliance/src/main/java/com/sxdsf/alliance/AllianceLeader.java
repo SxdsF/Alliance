@@ -40,7 +40,7 @@ public final class AllianceLeader implements Alliance<Request, Response> {
     }
 
     @Override
-    public Call<Response> request(Request request) {
-        return this.router.request(request);
+    public Call<Response> call(Request request) {
+        return this.router.call(request);
     }
 }

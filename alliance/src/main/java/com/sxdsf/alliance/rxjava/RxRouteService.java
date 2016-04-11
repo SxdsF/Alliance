@@ -28,12 +28,12 @@ public class RxRouteService implements RxFoundationAlliance<Request, String> {
     private final RxAllianceMap allianceMap = new RxAllianceMap();
 
     @Override
-    public Observable<Response> request(Request request) {
+    public Observable<Response> call(Request request) {
         Observable<Response> call = null;
         if (request != null) {
             RxAlliance<Request, Response> alliance = this.allianceMap.getAlliance(this.parse(request));
             if (alliance != null) {
-                call = alliance.request(request);
+                call = alliance.call(request);
             }
         }
         return call;

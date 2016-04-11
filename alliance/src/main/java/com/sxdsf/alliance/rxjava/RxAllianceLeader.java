@@ -26,8 +26,8 @@ public class RxAllianceLeader implements RxAlliance<Request, Response> {
     }
 
     @Override
-    public Observable<Response> request(Request request) {
-        return this.router.request(request);
+    public Observable<Response> call(Request request) {
+        return this.router.call(request);
     }
 
     private static class InstanceHolder {

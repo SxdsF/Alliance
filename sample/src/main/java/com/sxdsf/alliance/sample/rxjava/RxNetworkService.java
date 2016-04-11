@@ -30,7 +30,7 @@ public class RxNetworkService implements RxFoundationAlliance<Uri, String> {
 	RequestQueue mQueue = Volley.newRequestQueue(MyApplication.getContext());
 
 	@Override
-	public Observable<Response> request(com.sxdsf.alliance.Request request) {
+	public Observable<Response> call(com.sxdsf.alliance.Request request) {
 		Observable<Response> call = null;
 		if (request != null) {
 			call = this.sendRequest(request);

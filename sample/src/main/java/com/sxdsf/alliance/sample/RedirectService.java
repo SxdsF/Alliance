@@ -23,7 +23,7 @@ public class RedirectService implements FoundationAlliance<Uri, String> {
     private final Context context = MyApplication.getContext();
 
     @Override
-    public Call<Response> request(final Request request) {
+    public Call<Response> call(final Request request) {
         Call<Response> call = null;
         if (request != null) {
             call = new CallAdapter<Response>() {

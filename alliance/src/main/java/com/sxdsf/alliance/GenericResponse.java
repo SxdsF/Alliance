@@ -4,23 +4,19 @@ package com.sxdsf.alliance;
  * GenericResponse
  *
  * @author sunbowen
- * @date 2016/4/8-15:01
- * @desc 通用的泛型数据Response
+ * @date 2016/4/11-11:05
+ * @desc Response的泛型实现
  */
-public class GenericResponse<R> implements Response {
+public class GenericResponse<R> extends Response {
 
-    private R data;
+    private final InnerInformation<R> data = new InnerInformation<>();
 
     public void setData(R data) {
-        this.data = data;
+        this.data.setData(data);
     }
 
     @Override
     public <T> T checkAndGet(Class<T> cls) {
-        T t = null;
-        if (cls != null && this.data != null && cls == this.data.getClass()) {
-            t = cls.cast(this.data);
-        }
-        return t;
+        return this.data.checkAndGet(cls);
     }
 }

@@ -23,12 +23,12 @@ public class RouteService implements FoundationAlliance<Request, String> {
     private final AllianceMap allianceMap = new AllianceMap();
 
     @Override
-    public Call<Response> request(Request request) {
+    public Call<Response> call(Request request) {
         Call<Response> call = null;
         if (request != null) {
             Alliance<Request, Response> alliance = this.allianceMap.getAlliance(this.parse(request));
             if (alliance != null) {
-                call = alliance.request(request);
+                call = alliance.call(request);
             }
         }
         return call;

@@ -24,7 +24,7 @@ public class RxWhateverService implements RxFoundationAlliance<Uri, String> {
 	}
 
 	@Override
-	public Observable<Response> request(Request request) {
+	public Observable<Response> call(Request request) {
 		return Observable.create(new Observable.OnSubscribe<Response>() {
 			@Override
 			public void call(Subscriber<? super Response> subscriber) {

@@ -19,7 +19,7 @@ import com.sxdsf.alliance.Response;
  */
 public class WhateverService implements FoundationAlliance<Uri, String> {
     @Override
-    public Call<Response> request(final Request request) {
+    public Call<Response> call(final Request request) {
         Call<Response> call = null;
         if (request != null) {
             call = new CallAdapter<Response>() {

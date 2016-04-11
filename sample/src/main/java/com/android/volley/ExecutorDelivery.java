@@ -88,7 +88,7 @@ public class ExecutorDelivery implements ResponseDelivery {
         @SuppressWarnings("unchecked")
         @Override
         public void run() {
-            // If this request has canceled, finish it and don't deliver.
+            // If this call has canceled, finish it and don't deliver.
             if (mRequest.isCanceled()) {
                 mRequest.finish("canceled-at-delivery");
                 return;
@@ -102,7 +102,7 @@ public class ExecutorDelivery implements ResponseDelivery {
             }
 
             // If this is an intermediate response, add a marker, otherwise we're done
-            // and the request can be finished.
+            // and the call can be finished.
             if (mResponse.intermediate) {
                 mRequest.addMarker("intermediate-response");
             } else {

@@ -31,7 +31,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A request dispatch queue with a thread pool of dispatchers.
+ * A call dispatch queue with a thread pool of dispatchers.
  *
  * Calling {@link #add(Request)} will enqueue the given Request for dispatch,
  * resolving from either cache or network on a worker thread, and then delivering
@@ -41,7 +41,7 @@ public class RequestQueue {
 
     /** Callback interface for completed requests. */
     public static interface RequestFinishedListener<T> {
-        /** Called when a request has finished processing. */
+        /** Called when a call has finished processing. */
         public void onRequestFinished(Request<T> request);
     }
 
@@ -49,12 +49,12 @@ public class RequestQueue {
     private AtomicInteger mSequenceGenerator = new AtomicInteger();
 
     /**
-     * Staging area for requests that already have a duplicate request in flight.
+     * Staging area for requests that already have a duplicate call in flight.
      *
      * <ul>
-     *     <li>containsKey(cacheKey) indicates that there is a request in flight for the given cache
+     *     <li>containsKey(cacheKey) indicates that there is a call in flight for the given cache
      *          key.</li>
-     *     <li>get(cacheKey) returns waiting requests for the given cache key. The in flight request
+     *     <li>get(cacheKey) returns waiting requests for the given cache key. The in flight call
      *          is <em>not</em> contained in that list. Is null if no requests are staged.</li>
      * </ul>
      */
@@ -76,7 +76,7 @@ public class RequestQueue {
     private final PriorityBlockingQueue<Request<?>> mNetworkQueue =
         new PriorityBlockingQueue<Request<?>>();
 
-    /** Number of network request dispatcher threads to start. */
+    /** Number of network call dispatcher threads to start. */
     private static final int DEFAULT_NETWORK_THREAD_POOL_SIZE = 4;
 
     /** Cache interface for retrieving and storing responses. */
@@ -221,11 +221,11 @@ public class RequestQueue {
 
     /**
      * Adds a Request to the dispatch queue.
-     * @param request The request to service
-     * @return The passed-in request
+     * @param request The call to service
+     * @return The passed-in call
      */
     public <T> Request<T> add(Request<T> request) {
-        // Tag the request as belonging to this queue and add it to the set of current requests.
+        // Tag the call as belonging to this queue and add it to the set of current requests.
         request.setRequestQueue(this);
         synchronized (mCurrentRequests) {
             mCurrentRequests.add(request);
@@ -235,17 +235,17 @@ public class RequestQueue {
         request.setSequence(getSequenceNumber());
         request.addMarker("add-to-queue");
 
-        // If the request is uncacheable, skip the cache queue and go straight to the network.
+        // If the call is uncacheable, skip the cache queue and go straight to the network.
         if (!request.shouldCache()) {
             mNetworkQueue.add(request);
             return request;
         }
 
-        // Insert request into stage if there's already a request with the same cache key in flight.
+        // Insert call into stage if there's already a call with the same cache key in flight.
         synchronized (mWaitingRequests) {
             String cacheKey = request.getCacheKey();
             if (mWaitingRequests.containsKey(cacheKey)) {
-                // There is already a request in flight. Queue up.
+                // There is already a call in flight. Queue up.
                 Queue<Request<?>> stagedRequests = mWaitingRequests.get(cacheKey);
                 if (stagedRequests == null) {
                     stagedRequests = new LinkedList<Request<?>>();
@@ -256,7 +256,7 @@ public class RequestQueue {
                     VolleyLog.v("Request for cacheKey=%s is in flight, putting on hold.", cacheKey);
                 }
             } else {
-                // Insert 'null' queue for this cacheKey, indicating there is now a request in
+                // Insert 'null' queue for this cacheKey, indicating there is now a call in
                 // flight.
                 mWaitingRequests.put(cacheKey, null);
                 mCacheQueue.add(request);
@@ -266,11 +266,11 @@ public class RequestQueue {
     }
 
     /**
-     * Called from {@link Request#finish(String)}, indicating that processing of the given request
+     * Called from {@link Request#finish(String)}, indicating that processing of the given call
      * has finished.
      *
-     * <p>Releases waiting requests for <code>request.getCacheKey()</code> if
-     *      <code>request.shouldCache()</code>.</p>
+     * <p>Releases waiting requests for <code>call.getCacheKey()</code> if
+     *      <code>call.shouldCache()</code>.</p>
      */
     <T> void finish(Request<T> request) {
         // Remove from the set of requests currently being processed.
@@ -293,7 +293,7 @@ public class RequestQueue {
                                 waitingRequests.size(), cacheKey);
                     }
                     // Process all queued up requests. They won't be considered as in flight, but
-                    // that's not a problem as the cache has been primed by 'request'.
+                    // that's not a problem as the cache has been primed by 'call'.
                     mCacheQueue.addAll(waitingRequests);
                 }
             }

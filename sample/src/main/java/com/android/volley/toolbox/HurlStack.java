@@ -70,14 +70,14 @@ public class HurlStack implements HttpStack {
     }
 
     /**
-     * @param urlRewriter Rewriter to use for request URLs
+     * @param urlRewriter Rewriter to use for call URLs
      */
     public HurlStack(UrlRewriter urlRewriter) {
         this(urlRewriter, null);
     }
 
     /**
-     * @param urlRewriter Rewriter to use for request URLs
+     * @param urlRewriter Rewriter to use for call URLs
      * @param sslSocketFactory SSL factory to use for HTTPS connections
      */
     public HurlStack(UrlRewriter urlRewriter, SSLSocketFactory sslSocketFactory) {
@@ -131,7 +131,7 @@ public class HurlStack implements HttpStack {
     /**
      * Checks if a response message contains a body.
      * @see <a href="https://tools.ietf.org/html/rfc7230#section-3.3">RFC 7230 section 3.3</a>
-     * @param requestMethod request method
+     * @param requestMethod call method
      * @param responseCode response status code
      * @return whether the response has a body
      */
@@ -205,8 +205,8 @@ public class HurlStack implements HttpStack {
         switch (request.getMethod()) {
             case Method.DEPRECATED_GET_OR_POST:
                 // This is the deprecated way that needs to be handled for backwards compatibility.
-                // If the request's post body is null, then the assumption is that the request is
-                // GET.  Otherwise, it is assumed that the request is a POST.
+                // If the call's post body is null, then the assumption is that the call is
+                // GET.  Otherwise, it is assumed that the call is a POST.
                 byte[] postBody = request.getPostBody();
                 if (postBody != null) {
                     // Prepare output. There is no need to set Content-Length explicitly,
@@ -222,7 +222,7 @@ public class HurlStack implements HttpStack {
                 }
                 break;
             case Method.GET:
-                // Not necessary to set the request method because connection defaults to GET but
+                // Not necessary to set the call method because connection defaults to GET but
                 // being explicit here.
                 connection.setRequestMethod("GET");
                 break;
