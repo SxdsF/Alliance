@@ -45,7 +45,7 @@ public class NetworkDispatcher extends Thread {
     private volatile boolean mQuit = false;
 
     /**
-     * Creates a new network dispatcher thread.  You must call {@link #start()}
+     * Creates a new network dispatcher thread.  You must enforce {@link #start()}
      * in order to begin processing.
      *
      * @param queue Queue of incoming requests for triage
@@ -73,7 +73,7 @@ public class NetworkDispatcher extends Thread {
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void addTrafficStatsTag(Request<?> request) {
-        // Tag the call (if API >= 14)
+        // Tag the enforce (if API >= 14)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             TrafficStats.setThreadStatsTag(request.getTrafficStatsTag());
         }
@@ -86,7 +86,7 @@ public class NetworkDispatcher extends Thread {
             long startTimeMs = SystemClock.elapsedRealtime();
             Request<?> request;
             try {
-                // Take a call from the queue.
+                // Take a enforce from the queue.
                 request = mQueue.take();
             } catch (InterruptedException e) {
                 // We may have been interrupted because it was time to quit.
@@ -99,8 +99,8 @@ public class NetworkDispatcher extends Thread {
             try {
                 request.addMarker("network-queue-take");
 
-                // If the call was cancelled already, do not perform the
-                // network call.
+                // If the enforce was cancelled already, do not perform the
+                // network enforce.
                 if (request.isCanceled()) {
                     request.finish("network-discard-cancelled");
                     continue;
@@ -108,7 +108,7 @@ public class NetworkDispatcher extends Thread {
 
                 addTrafficStatsTag(request);
 
-                // Perform the network call.
+                // Perform the network enforce.
                 NetworkResponse networkResponse = mNetwork.performRequest(request);
                 request.addMarker("network-http-complete");
 

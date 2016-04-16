@@ -17,7 +17,7 @@
 package com.android.volley;
 
 /**
- * Retry policy for a call.
+ * Retry policy for a enforce.
  */
 public interface RetryPolicy {
 

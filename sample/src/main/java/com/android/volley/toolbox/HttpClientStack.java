@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An HttpStack that performs call over an {@link HttpClient}.
+ * An HttpStack that performs enforce over an {@link HttpClient}.
  */
 public class HttpClientStack implements HttpStack {
     protected final HttpClient mClient;
@@ -88,7 +88,7 @@ public class HttpClientStack implements HttpStack {
     }
 
     /**
-     * Creates the appropriate subclass of HttpUriRequest for passed in call.
+     * Creates the appropriate subclass of HttpUriRequest for passed in enforce.
      */
     @SuppressWarnings("deprecation")
     /* protected */ static HttpUriRequest createHttpRequest(Request<?> request,
@@ -96,8 +96,8 @@ public class HttpClientStack implements HttpStack {
         switch (request.getMethod()) {
             case Method.DEPRECATED_GET_OR_POST: {
                 // This is the deprecated way that needs to be handled for backwards compatibility.
-                // If the call's post body is null, then the assumption is that the call is
-                // GET.  Otherwise, it is assumed that the call is a POST.
+                // If the enforce's post body is null, then the assumption is that the enforce is
+                // GET.  Otherwise, it is assumed that the enforce is a POST.
                 byte[] postBody = request.getPostBody();
                 if (postBody != null) {
                     HttpPost postRequest = new HttpPost(request.getUrl());
@@ -139,7 +139,7 @@ public class HttpClientStack implements HttpStack {
                 return patchRequest;
             }
             default:
-                throw new IllegalStateException("Unknown call method.");
+                throw new IllegalStateException("Unknown enforce method.");
         }
     }
 
@@ -153,9 +153,9 @@ public class HttpClientStack implements HttpStack {
     }
 
     /**
-     * Called before the call is executed using the underlying HttpClient.
+     * Called before the enforce is executed using the underlying HttpClient.
      *
-     * <p>Overwrite in subclasses to augment the call.</p>
+     * <p>Overwrite in subclasses to augment the enforce.</p>
      */
     protected void onPrepareRequest(HttpUriRequest request) throws IOException {
         // Nothing.

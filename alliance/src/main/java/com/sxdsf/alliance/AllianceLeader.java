@@ -2,6 +2,12 @@ package com.sxdsf.alliance;
 
 import android.content.res.XmlResourceParser;
 
+import com.sxdsf.alliance.core.Alliance;
+import com.sxdsf.alliance.core.Call;
+import com.sxdsf.alliance.core.impl.Request;
+import com.sxdsf.alliance.core.impl.Response;
+import com.sxdsf.alliance.router.RouteService;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -13,34 +19,34 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class AllianceLeader implements Alliance<Request, Response> {
 
-    private final RouteService router;
-    private final AtomicBoolean initialized = new AtomicBoolean(false);
+	private final RouteService router;
+	private final AtomicBoolean initialized = new AtomicBoolean(false);
 
-    private AllianceLeader() {
-        this.router = new RouteService();
-    }
+	private AllianceLeader() {
+		this.router = new RouteService();
+	}
 
-    private static class InstanceHolder {
-        private static AllianceLeader INSTANCE = new AllianceLeader();
-    }
+	@Override
+	public Call<Response> enforce(Request request) {
+		return this.router.enforce(request);
+	}
 
-    public static AllianceLeader getInstance() {
-        return InstanceHolder.INSTANCE;
-    }
+	private static class InstanceHolder {
+		private static AllianceLeader INSTANCE = new AllianceLeader();
+	}
 
-    public void initialize(XmlResourceParser xrp) {
-        // 服务管理器初始化，实际上是调用RouteService的初始化去加载服务配置文件
-        if (this.initialized.compareAndSet(false, true)) {
-            this.router.initialize(xrp);
-        }
-    }
+	public static AllianceLeader getInstance() {
+		return InstanceHolder.INSTANCE;
+	}
 
-    public boolean isInitialized() {
-        return this.initialized.get();
-    }
+	public void initialize(XmlResourceParser xrp) {
+		// 服务管理器初始化，实际上是调用RouteService的初始化去加载服务配置文件
+		if (this.initialized.compareAndSet(false, true)) {
+			this.router.initialize(xrp);
+		}
+	}
 
-    @Override
-    public Call<Response> call(Request request) {
-        return this.router.call(request);
-    }
+	public boolean isInitialized() {
+		return this.initialized.get();
+	}
 }

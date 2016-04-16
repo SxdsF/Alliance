@@ -29,7 +29,7 @@ public interface ResponseDelivery {
     public void postResponse(Request<?> request, Response<?> response, Runnable runnable);
 
     /**
-     * Posts an error for the given call.
+     * Posts an error for the given enforce.
      */
     public void postError(Request<?> request, VolleyError error);
 }

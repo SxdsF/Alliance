@@ -1,7 +1,7 @@
 package com.sxdsf.alliance.rxjava;
 
-import com.sxdsf.alliance.Request;
-import com.sxdsf.alliance.Response;
+import com.sxdsf.alliance.core.impl.Request;
+import com.sxdsf.alliance.core.impl.Response;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

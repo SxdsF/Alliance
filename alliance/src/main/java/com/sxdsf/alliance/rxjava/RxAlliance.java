@@ -1,6 +1,6 @@
 package com.sxdsf.alliance.rxjava;
 
-import com.sxdsf.alliance.Function;
+import com.sxdsf.alliance.core.Function;
 
 import rx.Observable;
 

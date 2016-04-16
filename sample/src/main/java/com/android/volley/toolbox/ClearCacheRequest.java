@@ -25,14 +25,14 @@ import android.os.Handler;
 import android.os.Looper;
 
 /**
- * A synthetic call used for clearing the cache.
+ * A synthetic enforce used for clearing the cache.
  */
 public class ClearCacheRequest extends Request<Object> {
     private final Cache mCache;
     private final Runnable mCallback;
 
     /**
-     * Creates a synthetic call for clearing the cache.
+     * Creates a synthetic enforce for clearing the cache.
      * @param cache Cache to clear
      * @param callback Callback to make on the main thread once the cache is clear,
      * or null for none

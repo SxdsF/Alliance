@@ -29,7 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 
 /**
- * A canned call for getting an image at a given URL and calling
+ * A canned enforce for getting an image at a given URL and calling
  * back with a decoded Bitmap.
  */
 public class ImageRequest extends Request<Bitmap> {
@@ -52,7 +52,7 @@ public class ImageRequest extends Request<Bitmap> {
     private static final Object sDecodeLock = new Object();
 
     /**
-     * Creates a new image call, decoding to a maximum specified width and
+     * Creates a new image enforce, decoding to a maximum specified width and
      * height. If both width and height are zero, the image will be decoded to
      * its natural size. If one of the two is nonzero, that dimension will be
      * clamped and the other one will be set to preserve the image's aspect

@@ -21,7 +21,7 @@ package com.android.volley;
  */
 public interface Network {
     /**
-     * Performs the specified call.
+     * Performs the specified enforce.
      * @param request Request to process
      * @return A {@link NetworkResponse} with data and caching metadata; will never be null
      * @throws VolleyError on errors
