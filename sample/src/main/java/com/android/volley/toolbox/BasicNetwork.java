@@ -124,11 +124,11 @@ public class BasicNetwork implements Network {
                   responseContents = entityToBytes(httpResponse.getEntity());
                 } else {
                   // Add 0 byte response as a way of honestly representing a
-                  // no-content enforce.
+                  // no-content call.
                   responseContents = new byte[0];
                 }
 
-                // if the enforce is slow, log it.
+                // if the call is slow, log it.
                 long requestLifetime = SystemClock.elapsedRealtime() - requestStart;
                 logSlowRequests(requestLifetime, request, responseContents, statusLine);
 
@@ -186,7 +186,7 @@ public class BasicNetwork implements Network {
     private void logSlowRequests(long requestLifetime, Request<?> request,
             byte[] responseContents, StatusLine statusLine) {
         if (DEBUG || requestLifetime > SLOW_REQUEST_THRESHOLD_MS) {
-            VolleyLog.d("HTTP response for enforce=<%s> [lifetime=%d], [size=%s], " +
+            VolleyLog.d("HTTP response for call=<%s> [lifetime=%d], [size=%s], " +
                     "[rc=%d], [retryCount=%s]", request, requestLifetime,
                     responseContents != null ? responseContents.length : "null",
                     statusLine.getStatusCode(), request.getRetryPolicy().getCurrentRetryCount());
@@ -194,9 +194,9 @@ public class BasicNetwork implements Network {
     }
 
     /**
-     * Attempts to prepare the enforce for a retry. If there are no more attempts remaining in the
-     * enforce's retry policy, a timeout exception is thrown.
-     * @param request The enforce to use.
+     * Attempts to prepare the call for a retry. If there are no more attempts remaining in the
+     * call's retry policy, a timeout exception is thrown.
+     * @param request The call to use.
      */
     private static void attemptRetryOnException(String logPrefix, Request<?> request,
             VolleyError exception) throws VolleyError {

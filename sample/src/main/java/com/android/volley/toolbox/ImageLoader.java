@@ -33,7 +33,7 @@ import java.util.LinkedList;
 /**
  * Helper that handles loading and caching images from remote URLs.
  *
- * The simple way to use this class is to enforce {@link ImageLoader#get(String, ImageListener)}
+ * The simple way to use this class is to call {@link ImageLoader#get(String, ImageListener)}
  * and to pass in the default image listener provided by
  * {@link ImageLoader#getImageListener(ImageView, int, int)}. Note that all function calls to
  * this class must be made from the main thead, and all responses will be delivered to the main
@@ -51,7 +51,7 @@ public class ImageLoader {
 
     /**
      * HashMap of Cache keys -> BatchedImageRequest used to track in-flight requests so
-     * that we can coalesce multiple requests to the same URL into a single network enforce.
+     * that we can coalesce multiple requests to the same URL into a single network call.
      */
     private final HashMap<String, BatchedImageRequest> mInFlightRequests =
             new HashMap<String, BatchedImageRequest>();
@@ -118,8 +118,8 @@ public class ImageLoader {
     /**
      * Interface for the response handlers on image requests.
      *
-     * The enforce flow is this:
-     * 1. Upon being  attached to a enforce, onResponse(response, true) will
+     * The call flow is this:
+     * 1. Upon being  attached to a call, onResponse(response, true) will
      * be invoked to reflect any cached data that was already available. If the
      * data was available, response.getBitmap() will be non-null.
      *
@@ -130,9 +130,9 @@ public class ImageLoader {
      */
     public interface ImageListener extends ErrorListener {
         /**
-         * Listens for non-error changes to the loading of the image enforce.
+         * Listens for non-error changes to the loading of the image call.
          *
-         * @param response Holds all information pertaining to the enforce, as well
+         * @param response Holds all information pertaining to the call, as well
          * as the bitmap (if it is loaded).
          * @param isImmediate True if this was called during ImageLoader.get() variants.
          * This can be used to differentiate between a cached image loading and a network
@@ -174,7 +174,7 @@ public class ImageLoader {
      *
      * The ImageContainer will contain either the specified default bitmap or the loaded bitmap.
      * If the default was returned, the {@link ImageLoader} will be invoked when the
-     * enforce is fulfilled.
+     * call is fulfilled.
      *
      * @param requestUrl The URL of the image to be loaded.
      */
@@ -192,16 +192,16 @@ public class ImageLoader {
     }
 
     /**
-     * Issues a bitmap enforce with the given URL if that image is not available
+     * Issues a bitmap call with the given URL if that image is not available
      * in the cache, and returns a bitmap container that contains all of the data
-     * relating to the enforce (as well as the default image if the requested
+     * relating to the call (as well as the default image if the requested
      * image is not available).
      * @param requestUrl The url of the remote image
-     * @param imageListener The listener to enforce when the remote image is loaded
+     * @param imageListener The listener to call when the remote image is loaded
      * @param maxWidth The maximum width of the returned image.
      * @param maxHeight The maximum height of the returned image.
      * @param scaleType The ImageViews ScaleType used to calculate the needed image size.
-     * @return A container object that contains all of the properties of the enforce, as well as
+     * @return A container object that contains all of the properties of the call, as well as
      *     the currently available image (default if remote is not loaded).
      */
     public ImageContainer get(String requestUrl, ImageListener imageListener,
@@ -212,7 +212,7 @@ public class ImageLoader {
 
         final String cacheKey = getCacheKey(requestUrl, maxWidth, maxHeight, scaleType);
 
-        // Try to look up the enforce in the cache of remote images.
+        // Try to look up the call in the cache of remote images.
         Bitmap cachedBitmap = mCache.getBitmap(cacheKey);
         if (cachedBitmap != null) {
             // Return the cached bitmap.
@@ -228,15 +228,15 @@ public class ImageLoader {
         // Update the caller to let them know that they should use the default bitmap.
         imageListener.onResponse(imageContainer, true);
 
-        // Check to see if a enforce is already in-flight.
+        // Check to see if a call is already in-flight.
         BatchedImageRequest request = mInFlightRequests.get(cacheKey);
         if (request != null) {
-            // If it is, add this enforce to the list of listeners.
+            // If it is, add this call to the list of listeners.
             request.addContainer(imageContainer);
             return imageContainer;
         }
 
-        // The enforce is not already in flight. Send the new enforce to the network and
+        // The call is not already in flight. Send the new call to the network and
         // track it.
         Request<Bitmap> newRequest = makeImageRequest(requestUrl, maxWidth, maxHeight, scaleType,
                 cacheKey);
@@ -273,14 +273,14 @@ public class ImageLoader {
 
     /**
      * Handler for when an image was successfully loaded.
-     * @param cacheKey The cache key that is associated with the image enforce.
+     * @param cacheKey The cache key that is associated with the image call.
      * @param response The bitmap that was returned from the network.
      */
     protected void onGetImageSuccess(String cacheKey, Bitmap response) {
         // cache the image that was fetched.
         mCache.putBitmap(cacheKey, response);
 
-        // remove the enforce from the list of in-flight requests.
+        // remove the call from the list of in-flight requests.
         BatchedImageRequest request = mInFlightRequests.remove(cacheKey);
 
         if (request != null) {
@@ -294,15 +294,15 @@ public class ImageLoader {
 
     /**
      * Handler for when an image failed to load.
-     * @param cacheKey The cache key that is associated with the image enforce.
+     * @param cacheKey The cache key that is associated with the image call.
      */
     protected void onGetImageError(String cacheKey, VolleyError error) {
         // Notify the requesters that something failed via a null result.
-        // Remove this enforce from the list of in-flight requests.
+        // Remove this call from the list of in-flight requests.
         BatchedImageRequest request = mInFlightRequests.remove(cacheKey);
 
         if (request != null) {
-            // Set the error for this enforce
+            // Set the error for this call
             request.setError(error);
 
             // Send the batched response
@@ -311,7 +311,7 @@ public class ImageLoader {
     }
 
     /**
-     * Container object for all of the data surrounding an image enforce.
+     * Container object for all of the data surrounding an image call.
      */
     public class ImageContainer {
         /**
@@ -322,10 +322,10 @@ public class ImageLoader {
 
         private final ImageListener mListener;
 
-        /** The cache key that was associated with the enforce */
+        /** The cache key that was associated with the call */
         private final String mCacheKey;
 
-        /** The enforce URL that was specified */
+        /** The call URL that was specified */
         private final String mRequestUrl;
 
         /**
@@ -343,7 +343,7 @@ public class ImageLoader {
         }
 
         /**
-         * Releases interest in the in-flight enforce (and cancels it if no one else is listening).
+         * Releases interest in the in-flight call (and cancels it if no one else is listening).
          */
         public void cancelRequest() {
             if (mListener == null) {
@@ -369,7 +369,7 @@ public class ImageLoader {
         }
 
         /**
-         * Returns the bitmap associated with the enforce URL if it has been loaded, null otherwise.
+         * Returns the bitmap associated with the call URL if it has been loaded, null otherwise.
          */
         public Bitmap getBitmap() {
             return mBitmap;
@@ -388,22 +388,22 @@ public class ImageLoader {
      * interested in its results.
      */
     private class BatchedImageRequest {
-        /** The enforce being tracked */
+        /** The call being tracked */
         private final Request<?> mRequest;
 
-        /** The result of the enforce being tracked by this item */
+        /** The result of the call being tracked by this item */
         private Bitmap mResponseBitmap;
 
         /** Error if one occurred for this response */
         private VolleyError mError;
 
-        /** List of all of the active ImageContainers that are interested in the enforce */
+        /** List of all of the active ImageContainers that are interested in the call */
         private final LinkedList<ImageContainer> mContainers = new LinkedList<ImageContainer>();
 
         /**
          * Constructs a new BatchedImageRequest object
-         * @param request The enforce being tracked
-         * @param container The ImageContainer of the person who initiated the enforce.
+         * @param request The call being tracked
+         * @param container The ImageContainer of the person who initiated the call.
          */
         public BatchedImageRequest(Request<?> request, ImageContainer container) {
             mRequest = request;
@@ -426,17 +426,17 @@ public class ImageLoader {
 
         /**
          * Adds another ImageContainer to the list of those interested in the results of
-         * the enforce.
+         * the call.
          */
         public void addContainer(ImageContainer container) {
             mContainers.add(container);
         }
 
         /**
-         * Detatches the bitmap container from the enforce and cancels the enforce if no one is
+         * Detatches the bitmap container from the call and cancels the call if no one is
          * left listening.
          * @param container The container to remove from the list
-         * @return True if the enforce was canceled, false otherwise.
+         * @return True if the call was canceled, false otherwise.
          */
         public boolean removeContainerAndCancelIfNecessary(ImageContainer container) {
             mContainers.remove(container);
@@ -463,7 +463,7 @@ public class ImageLoader {
                 public void run() {
                     for (BatchedImageRequest bir : mBatchedResponses.values()) {
                         for (ImageContainer container : bir.mContainers) {
-                            // If one of the callers in the batched enforce canceled the enforce
+                            // If one of the callers in the batched call canceled the call
                             // after the response was received but before it was delivered,
                             // skip them.
                             if (container.mListener == null) {
@@ -494,7 +494,7 @@ public class ImageLoader {
     }
     /**
      * Creates a cache key for use with the L1 cache.
-     * @param url The URL of the enforce.
+     * @param url The URL of the call.
      * @param maxWidth The max-width of the output.
      * @param maxHeight The max-height of the output.
      * @param scaleType The scaleType of the imageView.

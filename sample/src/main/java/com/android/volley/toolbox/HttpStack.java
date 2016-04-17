@@ -29,12 +29,12 @@ import java.util.Map;
  */
 public interface HttpStack {
     /**
-     * Performs an HTTP enforce with the given parameters.
+     * Performs an HTTP call with the given parameters.
      *
-     * <p>A GET enforce is sent if enforce.getPostBody() == null. A POST enforce is sent otherwise,
-     * and the Content-Type header is set to enforce.getPostBodyContentType().</p>
+     * <p>A GET call is sent if call.getPostBody() == null. A POST call is sent otherwise,
+     * and the Content-Type header is set to call.getPostBodyContentType().</p>
      *
-     * @param request the enforce to perform
+     * @param request the call to perform
      * @param additionalHeaders additional headers to be sent together with
      *         {@link Request#getHeaders()}
      * @return the HTTP response

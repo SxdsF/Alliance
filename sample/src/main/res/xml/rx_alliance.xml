@@ -2,15 +2,15 @@
 <alliance-list>
 
     <alliance
-        name="com.sxdsf.alliance.sample.rxjava.redirect.RxRedirectService"
+        name="com.sxdsf.alliance.sample.rx.redirect.RxRedirectService"
         scheme="redirect"/>
 
     <alliance
-        name="com.sxdsf.alliance.sample.rxjava.whatever.RxWhateverService"
+        name="com.sxdsf.alliance.sample.rx.whatever.RxWhateverService"
         scheme="whatever"/>
 
     <alliance
-        name="com.sxdsf.alliance.sample.rxjava.network.RxNetworkService"
+        name="com.sxdsf.alliance.sample.rx.network.RxNetworkService"
         scheme="network"/>
 
 </alliance-list>

@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Data and headers returned from {@link Network#performRequest(Request)}.
+ * RouteData and headers returned from {@link Network#performRequest(Request)}.
  */
 public class NetworkResponse {
     /**

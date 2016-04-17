@@ -33,7 +33,7 @@ public interface Cache {
     /**
      * Adds or replaces an entry to the cache.
      * @param key Cache key
-     * @param entry Data to store and metadata for cache coherency, TTL, etc.
+     * @param entry RouteData to store and metadata for cache coherency, TTL, etc.
      */
     public void put(String key, Entry entry);
 
@@ -62,7 +62,7 @@ public interface Cache {
     public void clear();
 
     /**
-     * Data and metadata for an entry returned by the cache.
+     * RouteData and metadata for an entry returned by the cache.
      */
     public static class Entry {
         /** The data returned from cache. */

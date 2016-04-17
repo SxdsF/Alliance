@@ -3,14 +3,14 @@ package com.sxdsf.alliance.sample.redirect;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.sxdsf.alliance.core.impl.generic.GenericRequestBuilder;
+import com.sxdsf.alliance.impl.generic.GenericRequestBuilder;
 
 /**
  * RedirectRequestBuilder
  *
- * @author Administrator
+ * @author sunbowen
  * @date 2016/4/15-23:07
- * @desc ${描述类实现的功能}
+ * @desc 跳转服务的请求创建类
  */
 public class RedirectRequestBuilder extends GenericRequestBuilder<Bundle> {
 

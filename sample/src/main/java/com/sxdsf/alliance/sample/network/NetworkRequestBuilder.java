@@ -2,16 +2,16 @@ package com.sxdsf.alliance.sample.network;
 
 import android.net.Uri;
 
-import com.sxdsf.alliance.core.impl.generic.GenericRequestBuilder;
+import com.sxdsf.alliance.impl.generic.GenericRequestBuilder;
 
 import java.util.Map;
 
 /**
  * NetworkRequestBuilder
  *
- * @author Administrator
+ * @author sunbowen
  * @date 2016/4/16-0:21
- * @desc ${描述类实现的功能}
+ * @desc 网络服务的请求创建类
  */
 public class NetworkRequestBuilder extends GenericRequestBuilder<Map> {
 

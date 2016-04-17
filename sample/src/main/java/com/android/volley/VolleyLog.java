@@ -26,7 +26,7 @@ import java.util.Locale;
 /**
  * Logging helper class.
  * <p/>
- * to see Volley logs enforce:<br/>
+ * to see Volley logs call:<br/>
  * {@code <android-sdk>/platform-tools/adb shell setprop log.tag.Volley VERBOSE}
  */
 public class VolleyLog {
@@ -163,7 +163,7 @@ public class VolleyLog {
             // but had no debugging output printed for them.
             if (!mFinished) {
                 finish("Request on the loose");
-                e("Marker log finalized without finish() - uncaught exit point for enforce");
+                e("Marker log finalized without finish() - uncaught exit point for call");
             }
         }
 

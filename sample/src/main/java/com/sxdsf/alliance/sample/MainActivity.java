@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.sxdsf.alliance.core.impl.CallbackAdapter;
-import com.sxdsf.alliance.core.impl.Request;
-import com.sxdsf.alliance.core.impl.Response;
+import com.sxdsf.alliance.general.impl.CallbackAdapter;
+import com.sxdsf.alliance.impl.Request;
+import com.sxdsf.alliance.impl.Response;
 import com.sxdsf.alliance.sample.network.NetworkRequestBuilder;
 import com.sxdsf.alliance.sample.redirect.RedirectRequestBuilder;
 import com.sxdsf.alliance.sample.whatever.WhateverRequestBuilder;
@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 				Request rw = new WhateverRequestBuilder("whatever").setMessage("whatever").build();
 
 				// 普通版的
-				MyApplication.SERVICE_MANAGER.enforce(rd).execute();
-				MyApplication.SERVICE_MANAGER.enforce(rn).execute(new CallbackAdapter<Response>() {
+				MyApplication.SERVICE_MANAGER.call(rd).execute();
+				MyApplication.SERVICE_MANAGER.call(rn).execute(new CallbackAdapter<Response>() {
 					@Override
 					public void onCompleted() {
 						super.onCompleted();
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 					}
 				});
 
-				MyApplication.SERVICE_MANAGER.enforce(rw).execute(new CallbackAdapter<Response>() {
+				MyApplication.SERVICE_MANAGER.call(rw).execute(new CallbackAdapter<Response>() {
 					@Override
 					public void onCompleted() {
 						super.onCompleted();
@@ -75,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				});
-				Response response = MyApplication.SERVICE_MANAGER.enforce(rw).execute();
+				Response response = MyApplication.SERVICE_MANAGER.call(rw).execute();
 				System.out.println(response.checkAndGet(String.class));
 
 				// RxJava版的
-				MyApplication.RX_SERVICE_MANAGER.enforce(rd).subscribe();
-				MyApplication.RX_SERVICE_MANAGER.enforce(rn).subscribe(new Subscriber<Response>() {
+				MyApplication.RX_SERVICE_MANAGER.call(rd).subscribe();
+				MyApplication.RX_SERVICE_MANAGER.call(rn).subscribe(new Subscriber<Response>() {
 					@Override
 					public void onCompleted() {
 						System.out.println("调用完成");
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 						System.out.println(s);
 					}
 				});
-				MyApplication.RX_SERVICE_MANAGER.enforce(rw).subscribe(new Subscriber<Response>() {
+				MyApplication.RX_SERVICE_MANAGER.call(rw).subscribe(new Subscriber<Response>() {
 					@Override
 					public void onCompleted() {
 

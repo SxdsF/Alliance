@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 
-import com.sxdsf.alliance.AllianceLeader;
-import com.sxdsf.alliance.rxjava.RxAllianceLeader;
+import com.sxdsf.alliance.general.AllianceLeader;
+import com.sxdsf.alliance.rx.RxAllianceLeader;
 
 /**
  * MyApplication
