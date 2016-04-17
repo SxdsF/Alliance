@@ -1,13 +1,15 @@
 package com.sxdsf.alliance.sample.whatever;
 
-import com.sxdsf.alliance.core.impl.generic.GenericResponse;
 import com.sxdsf.alliance.core.Call;
 import com.sxdsf.alliance.core.Callback;
 import com.sxdsf.alliance.core.impl.BaseAlliance;
 import com.sxdsf.alliance.core.impl.BaseEnforcer;
 import com.sxdsf.alliance.core.impl.BaseLaw;
 import com.sxdsf.alliance.core.impl.CallAdapter;
+import com.sxdsf.alliance.core.impl.Request;
+import com.sxdsf.alliance.core.impl.RequestParser;
 import com.sxdsf.alliance.core.impl.Response;
+import com.sxdsf.alliance.core.impl.generic.GenericResponse;
 
 /**
  * WhateverService
@@ -48,6 +50,16 @@ public class WhateverService extends BaseAlliance<String> {
 
 	@Override
 	protected BaseLaw<String> createLaw() {
-		return new WhateverLaw();
+		return new BaseLaw<String>() {
+			@Override
+			protected RequestParser<String> createRequestParser() {
+				return new RequestParser<String>() {
+					@Override
+					public String parse(Request value) {
+						return "whatever";
+					}
+				};
+			}
+		};
 	}
 }

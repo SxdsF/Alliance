@@ -1,11 +1,12 @@
 package com.sxdsf.alliance.sample.rxjava.whatever;
 
+import com.sxdsf.alliance.core.impl.Request;
+import com.sxdsf.alliance.core.impl.RequestParser;
 import com.sxdsf.alliance.core.impl.Response;
 import com.sxdsf.alliance.core.impl.generic.GenericResponse;
 import com.sxdsf.alliance.rxjava.RxBaseAlliance;
 import com.sxdsf.alliance.rxjava.RxBaseEnforcer;
 import com.sxdsf.alliance.rxjava.RxBaseLaw;
-import com.sxdsf.alliance.sample.rxjava.network.RxNetworkLaw;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -39,6 +40,16 @@ public class RxWhateverService extends RxBaseAlliance<String> {
 
 	@Override
 	protected RxBaseLaw<String> createLaw() {
-		return new RxNetworkLaw();
+		return new RxBaseLaw<String>() {
+			@Override
+			protected RequestParser<String> createRequestParser() {
+				return new RequestParser<String>() {
+					@Override
+					public String parse(Request value) {
+						return "whatever";
+					}
+				};
+			}
+		};
 	}
 }

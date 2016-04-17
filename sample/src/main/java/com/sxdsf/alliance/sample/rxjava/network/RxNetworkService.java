@@ -1,9 +1,12 @@
 package com.sxdsf.alliance.sample.rxjava.network;
 
+import android.net.Uri;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.sxdsf.alliance.core.impl.RequestParser;
 import com.sxdsf.alliance.core.impl.Response;
 import com.sxdsf.alliance.core.impl.generic.GenericResponse;
 import com.sxdsf.alliance.rxjava.RxBaseAlliance;
@@ -45,7 +48,24 @@ public class RxNetworkService extends RxBaseAlliance<String> {
 
 	@Override
 	protected RxBaseLaw<String> createLaw() {
-		return new RxNetworkLaw();
+		return new RxBaseLaw<String>() {
+			@Override
+			protected RequestParser<String> createRequestParser() {
+				return new RequestParser<String>() {
+					@Override
+					public String parse(com.sxdsf.alliance.core.impl.Request value) {
+						String url = null;
+						if (value != null) {
+							Uri uri = value.getUri();
+							if (uri != null) {
+								url = uri.getAuthority();
+							}
+						}
+						return url;
+					}
+				};
+			}
+		};
 	}
 
 	Observable<Response> sendRequest(final String request) {
